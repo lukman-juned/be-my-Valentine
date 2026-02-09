@@ -1,51 +1,140 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f9e3e3;
-    font-family: 'Arial', sans-serif;
-    flex-direction: column;
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  h1 {
-    font-size: 2.5em;
-    color: #d32f2f;
-  }
-  
-  .buttons {
-    margin-top: 20px;
-  }
-  
-  .yes-button {
-    font-size: 1.5em;
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .no-button {
-    font-size: 1.5em;
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .gif_container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    /* YES */
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* NO */
+    #noBtn {
+      background: white;
+      color: #ff4d6d;
+    }
+
+    .final {
+      display: none;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="page">
+    <h1 id="question">Will you be my valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No 💔</button>
+    </div>
+  </div>
+
+  <div class="final" id="final">
+    I know you’ll say yes 💕
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const page = document.getElementById("page");
+    const final = document.getElementById("final");
+
+    let noPosition = { x: 0, y: 0 };
+    let yesScale = 1;
+    let noClicked = false;
+
+    function moveNoButton() {
+      const isMobile = window.innerWidth < 768;
+      const maxX = isMobile ? 100 : 200;
+      const maxY = isMobile ? 100 : 200;
+
+      const newX = Math.random() * (maxX * 2) - maxX;
+      const newY = Math.random() * (maxY * 2) - maxY;
+
+      noPosition = { x: newX, y: newY };
+
+      noBtn.style.transform = `translate(${noPosition.x}px, ${noPosition.y}px)`;
+    }
+
+    // Desktop
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("focus", moveNoButton);
+
+    // Mobile
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    // If clicked
+    noBtn.addEventListener("click", () => {
+      if (!noClicked) {
+        noBtn.textContent = "Please think again 💔";
+        noClicked = true;
+      }
+
+      yesScale += 0.15;
+      yesBtn.style.transform = `scale(${yesScale})`;
+
+      moveNoButton();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      page.style.display = "none";
+      final.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
